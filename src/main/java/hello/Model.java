@@ -10,11 +10,6 @@ import com.db4o.query.Query;
 
 public class Model{
 	
-	ObjectContainer topics = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/topics.db4o");
-	ObjectContainer users = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/users.db4o");
-	
-	
-	
 	ObjectContainer students = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/students.db4o");
 	ObjectContainer questions = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/questions.db4o");
 	ObjectContainer competencies = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/competencies.db4o");
@@ -22,7 +17,34 @@ public class Model{
 	ObjectContainer psychologists = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/psychologists.db4o");
 	ObjectContainer adms = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/adms.db4o");
 	
-	//
+
+	
+	public boolean addStudent(Student student){
+		
+		if(isUserAvailable(student.getUserName())){
+			List<Competency> studentsCompetencies = new LinkedList<Competency>();
+			
+			Query query = competencies.query();
+			query.constrain(Competency.class);
+		    ObjectSet<Competency> allCompetencies = query.execute();
+		    
+		    for(Competency competency:allCompetencies){
+		    	studentsCompetencies.add(competency);
+		    }
+			
+		    student.setCompetencies(studentsCompetencies);
+		    
+		    
+			students.store(student);
+			students.commit();
+			
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
 	public boolean addPsychologist(Psychologist psychologist){
 		if(isPsychologistUserAvailable(psychologist.getUserName())){
 			
@@ -47,6 +69,18 @@ public class Model{
 		}
 		
 		return false;
+	}
+	
+	public boolean isUserAvailable(String username){
+		Query query = students.query();
+		query.constrain(Student.class);
+	    ObjectSet<Student> allStudents = query.execute();
+	    
+	    for(Student student:allStudents){
+	    	if(student.getUserName().equals(username)) return false;
+	    }
+	    
+	    return true;
 	}
 	
 	public boolean isPsychologistUserAvailable(String username){
@@ -210,7 +244,25 @@ public class Model{
 
 	}
 	
+	public Student searchStudentbyRA(int ra){
+		
+		
+		Query query = students.query();
+		query.constrain(Student.class);
+	    ObjectSet<Student> allStudents = query.execute();
+		
+	    for(Student student:allStudents){
+	    	if(student.getRa()==ra){
+	    		return student;
+	    	}
+	    	
+	    }
+	    
+	    return null;
 
+		
+	}
+	
 	public Question searchQuestionByCode(int code){
 		
 		Query query = questions.query();

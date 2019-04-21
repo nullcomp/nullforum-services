@@ -1,21 +1,41 @@
-package hello;
+package src.main.java.hello;
 
 import java.util.List;
 
-public class Comment {
-	
-	private int id;	
+public class Comment extends Post {
+		
 	private String content;
 	private String image;
-	private User author;
 	private List<Comment> comments;
 	private int likes;
 	private int dislikes;
-	private Date publishDate;
-
-	public int getId() {
-		return id;
+	
+	public Comment(int id, String content, String image, User author, List<Comment> comments, int likes, int dislikes,
+			Date publishDate) {
+		super(id, author, publishDate);
+		this.content = content;
+		this.image = image;
+		this.comments = comments;
+		this.likes = likes;
+		this.dislikes = dislikes;
 	}
+	
+	public void addDislike(int dislikes) {
+		this.dislikes++;
+	}
+	public void addLike(int likes) {
+		this.likes++;
+	}	
+	public void unDislike(int dislikes) {
+		this.dislikes--;
+	}
+	public void unLike(int likes) {
+		this.likes--;
+	}
+	public int getRate() {
+		return likes - dislikes;
+	}
+	
 	public String getContent() {
 		return content;
 	}
@@ -28,12 +48,6 @@ public class Comment {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public User getAuthor() {
-		return author;
-	}
-	public void setAuthor(User author) {
-		this.author = author;
-	}
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -43,19 +57,7 @@ public class Comment {
 	public int getLikes() {
 		return likes;
 	}
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
 	public int getDislikes() {
 		return dislikes;
-	}
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
-	}
-	public Date getPublishDate() {
-		return publishDate;
-	}
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
 	}
 }
