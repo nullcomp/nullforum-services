@@ -1,6 +1,8 @@
-package src.main.java.hello;
+package hello;
 
 import java.util.List;
+
+import hello.Post;
 
 public class Comment extends Post {
 		

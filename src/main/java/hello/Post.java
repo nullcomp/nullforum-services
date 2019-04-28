@@ -1,4 +1,4 @@
-package src.main.java.hello;
+package hello;
 
 public abstract class Post {
 	
