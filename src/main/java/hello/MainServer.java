@@ -2,13 +2,8 @@ package hello;
 
 import static spark.Spark.*;
 
-
-
-
 import java.util.LinkedList;
 import java.util.List;
-
-
 
 public class MainServer {
 
@@ -33,7 +28,7 @@ public class MainServer {
     }
 	
     public static void initializeModel(){
-		model.addUser(new User(0, "flromeiroc", "Fábio Lucas", "flromeiroc@gmail.com", "123456"));
+		// model.addUser(new User(0, "flromeiroc", "Fábio Lucas", "flromeiroc@gmail.com", "123456"));
 	}
 	
 }

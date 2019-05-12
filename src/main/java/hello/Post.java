@@ -3,23 +3,20 @@ package hello;
 public abstract class Post {
 	
 	private int id;	
-	private User author;
+	private int authorId;
 	private Date publishDate;
 	
-	public Post(int id, User author, Date publishDate) {
+	public Post(int id, int authorId, Date publishDate) {
 		this.id = id;
-		this.author = author;
+		this.authorId = authorId;
 		this.publishDate = publishDate;
 	}
 	
 	public int getId() {
 		return id;
 	}
-	public User getAuthor() {
-		return author;
-	}
-	public void setAuthor(User author) {
-		this.author = author;
+	public int getAuthorId() {
+		return authorId;
 	}
 	public Date getPublishDate() {
 		return publishDate;

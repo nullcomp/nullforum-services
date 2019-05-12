@@ -1,7 +1,5 @@
 package hello;
 
-
-
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -19,7 +17,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-
 public class REST{
 	
 	private Model model;
@@ -31,76 +28,99 @@ public class REST{
 	
 	public void userHandler() {
 	
-		get("/users", new Route() {
-			
-			@Override
-			public Object handle(final Request request, final Response response) {
-				response.header("Acess-Controll-Allow-Origin", "*");
-				
-				JSONArray jsonResult = new JSONArray();
-         	    
-	            try {	            	
-	            	List<User> users = model.searchUsers();
-	            	
-	            	for(User user:users){
-	            		
-	            		JSONObject jsonObj = new JSONObject();
-	            		jsonObj.put("id", user.getId());
-	            		jsonObj.put("username", user.getUsername());
-	            		jsonObj.put("name", user.getName());
-	            		jsonObj.put("email", user.getEmail());
-	            		jsonObj.put("password", user.getPassword());
-	            		jsonObj.put("topics", user.getTopics());
-	            		jsonObj.put("comments", user.getComments());
-	            		jsonResult.put(jsonObj);
-	            	}
+		get("/users", (request,response) -> {
 
-	            	return jsonResult;
-	             	
-        		} catch (JSONException e) {
-        			e.printStackTrace();
-        		}
-	
-	     	    return null;
+			response.header("Acess-Controll-Allow-Origin", "*");
+
+			JSONArray jsonResult = new JSONArray();
+
+			try {
+				List<User> users = model.searchUsers();
+
+				for(User user:users){
+
+					JSONObject jsonObj = new JSONObject();
+					jsonObj.put("id", user.getId());
+					jsonObj.put("username", user.getUsername());
+					jsonObj.put("name", user.getName());
+					jsonObj.put("email", user.getEmail());
+					jsonObj.put("password", user.getPassword());
+					jsonObj.put("topics", user.getTopics());
+					jsonObj.put("comments", user.getComments());
+					jsonResult.put(jsonObj);
+				}
+
+				return jsonResult;
+
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
+
+			return null;
       });
 		
-		post("/users/add", new Route() {
-			
-			public Object handle(final Request request, final Response response) {
-	           
-				response.header("Access-Control-Allow-Origin", "*");
-	
-				Gson gson = new Gson();
-	           
-				String data = request.body();
-				
-	     	   	try {
-	     	   		
-		     	   	byte text[] = data.getBytes("ISO-8859-1");
-					String value = new String(text, "UTF-8");
-					User user = gson.fromJson(value, User.class);
-	            	
-            		model.addUser(user);
-            		JSONArray jsonResult = new JSONArray();
- 	         	    JSONObject jsonObj = new JSONObject();
-	        		jsonObj.put("status", 200);
-	        	 	jsonResult.put(jsonObj);
-	             	
-	             	return jsonResult;
-            	
-        		} catch (JSONException | UnsupportedEncodingException u) {
-        			u.printStackTrace();
-        		}
-	     	    
-	     	    JSONArray jsonResult = new JSONArray();
-	     	    JSONObject jsonObj = new JSONObject();
-	     	   	
-	     	    jsonObj.put("status", 401);
-	         	jsonResult.put(jsonObj);
-	         	
-	         	return jsonResult;
+		post("/users/add", (request,response) -> {
+
+			response.header("Access-Control-Allow-Origin", "*");
+
+			Gson gson = new Gson();
+
+			String data = request.body();
+
+			try {
+
+				byte text[] = data.getBytes("ISO-8859-1");
+				String value = new String(text, "UTF-8");
+				User user = gson.fromJson(value, User.class);
+
+				model.addUser(user);
+				JSONArray jsonResult = new JSONArray();
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("status", 200);
+				jsonResult.put(jsonObj);
+
+				return jsonResult;
+
+			} catch (JSONException | UnsupportedEncodingException u) {
+				u.printStackTrace();
 			}
+
+			JSONArray jsonResult = new JSONArray();
+			JSONObject jsonObj = new JSONObject();
+
+			jsonObj.put("status", 401);
+			jsonResult.put(jsonObj);
+
+			return jsonResult;
+		});
+	}
+
+	public void postHandler() {
+		post("posts/add", (req, res)-> {
+
+			Gson gson = new Gson();
+			String data = req.body();
+
+			try {
+
+				byte text[] = data.getBytes("ISO-8859-1");
+				String value = new String(text, "UTF-8");
+				Topic topic = gson.fromJson(value, Topic.class);
+
+				model.addTopic(topic);
+
+				JSONArray jsonResult = new JSONArray();
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("status", 200);
+				jsonResult.put(jsonObj);
+
+				return jsonResult;
+
+			} catch (JSONException | UnsupportedEncodingException u) {
+				u.printStackTrace();
+			}
+
+			return 0;
 		});
 	}
 	

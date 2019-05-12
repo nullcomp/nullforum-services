@@ -11,8 +11,7 @@ import com.db4o.query.Query;
 public class Model{
 	
 	ObjectContainer users = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/users.db4o");
-	ObjectContainer topics = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), "bd/topics.db4o");
-	
+
 	public boolean addUser(User user){
 		
 		if(isUserAvailable(user.getUsername())){
@@ -45,6 +44,20 @@ public class Model{
 	    ObjectSet<User> allUsers = query.execute();
 	    
 	    return allUsers;
+	}
+
+	public void addTopic(Topic topic) {
+		List<User> users = searchUsers();
+		for(User user:users) {
+			if (user.getId() == topic.getAuthorId()) {
+				ObjectSet result = this.users.queryByExample(user);
+				User presult = (User) result.next();
+				presult.addTopic(topic);
+				this.users.store(presult);
+				this.users.commit();
+				break;
+			}
+		}
 	}
 	
 //	public boolean addPsychologist(Psychologist psychologist){

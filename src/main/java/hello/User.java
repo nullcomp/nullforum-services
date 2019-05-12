@@ -65,6 +65,8 @@ public class User {
 		this.topics = topics;
 	}
 
+	public void addTopic(Topic topic) { topics.add(topic); }
+
 	public List<Comment> getComments() {
 		return comments;
 	}

@@ -12,9 +12,9 @@ public class Comment extends Post {
 	private int likes;
 	private int dislikes;
 	
-	public Comment(int id, String content, String image, User author, List<Comment> comments, int likes, int dislikes,
+	public Comment(int id, String content, String image, int authorId, List<Comment> comments, int likes, int dislikes,
 			Date publishDate) {
-		super(id, author, publishDate);
+		super(id, authorId, publishDate);
 		this.content = content;
 		this.image = image;
 		this.comments = comments;
