@@ -25,10 +25,11 @@ public class MainServer {
 		REST controller = new REST(model); 
 		
 		controller.userHandler();
+		controller.postHandler();
     }
 	
     public static void initializeModel(){
-		// model.addUser(new User(0, "flromeiroc", "Fábio Lucas", "flromeiroc@gmail.com", "123456"));
+//        model.addUser(new User(1,"flromeiroc1","Fabio Lucas", "flromeiroc@gmail.com","123456"));
 	}
 	
 }

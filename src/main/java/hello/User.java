@@ -10,8 +10,8 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
-	private List<Topic> topics = new LinkedList<Topic>();
-	private List<Comment> comments = new LinkedList<Comment>();
+	private List<Topic> topics;
+	private List<Comment> comments;
 	
 	public User(int id, String username, String name, String email, String password) {
 		this.id = id;
@@ -19,6 +19,8 @@ public class User {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.topics = new LinkedList<Topic>();
+		this.comments = new LinkedList<Comment>();
 	}
 
 	public int getId() {
