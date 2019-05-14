@@ -12,7 +12,9 @@ public class User {
 	private String password;
 	private List<Topic> topics;
 	private List<Comment> comments;
-	
+	private List<Integer> followersIds;
+	private List<Integer> followingsIds;
+
 	public User(int id, String username, String name, String email, String password) {
 		this.id = id;
 		this.username = username;
@@ -21,6 +23,8 @@ public class User {
 		this.password = password;
 		this.topics = new LinkedList<Topic>();
 		this.comments = new LinkedList<Comment>();
+		this.followersIds = new LinkedList<Integer>();
+		this.followingsIds = new LinkedList<Integer>();
 	}
 
 	public int getId() {
@@ -75,5 +79,29 @@ public class User {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public List<Integer> getFollowersIds() {
+		return followersIds;
+	}
+
+	public void setFollowersIds(List<Integer> followers) {
+		this.followersIds = followers;
+	}
+
+	public List<Integer> getFollowingsIds() {
+		return followingsIds;
+	}
+
+	public void setFollowingsIds(List<Integer> followings) {
+		this.followingsIds = followings;
+	}
+
+	public void addFollowingId(int id) {
+		this.followingsIds.add(id);
+	}
+
+	public void addFollowerId(int id) {
+		this.followersIds.add(id);
 	}
 }

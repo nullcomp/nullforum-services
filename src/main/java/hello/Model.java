@@ -6,6 +6,7 @@ import java.util.List;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.query.Constraint;
 import com.db4o.query.Query;
 
 public class Model{
@@ -36,6 +37,14 @@ public class Model{
 	    
 	    return true;
 	}
+
+	public boolean userExists(String username, String password) {
+		for (User user : searchUsers()) {
+			if(username.equals(user.getUsername()) && password.equals(user.getPassword()))
+				return true;
+		}
+		return false;
+	}
 	
 	public List<User> searchUsers(){
 		
@@ -50,7 +59,10 @@ public class Model{
 		List<User> users = searchUsers();
 		for(User user:users) {
 			if (user.getId() == topic.getAuthorId()) {
-				ObjectSet result = this.users.queryByExample(user);
+				Query query = this.users.query();
+				query.constrain(User.class);
+				query.descend("id").constrain(topic.getAuthorId());
+				ObjectSet result = query.execute();
 				User presult = (User) result.next();
 				presult.addTopic(topic);
 				this.users.store(presult);
@@ -58,6 +70,26 @@ public class Model{
 				break;
 			}
 		}
+	}
+
+	public List<Integer> getFollowingsByUserId(int userId) {
+		List<User> users = searchUsers();
+		for (User user: users) {
+			if(user.getId() == userId) {
+				return user.getFollowingsIds();
+			}
+		}
+		return new LinkedList<Integer>();
+	}
+
+	public List<Topic> getTopicsByUserId(int userId) {
+		List<User> users = searchUsers();
+		for (User user: users) {
+			if(user.getId() == userId) {
+				return user.getTopics();
+			}
+		}
+		return new LinkedList<>();
 	}
 	
 //	public boolean addPsychologist(Psychologist psychologist){

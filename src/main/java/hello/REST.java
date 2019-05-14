@@ -5,8 +5,12 @@ import static spark.Spark.post;
 
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +24,7 @@ import spark.Route;
 public class REST{
 	
 	private Model model;
-	
-	
+
 	public REST(Model store){
 		this.model = store;
 	}
@@ -93,10 +96,23 @@ public class REST{
 
 			return jsonResult;
 		});
+
+		get("/user/authentication", (req,res)-> {
+			String data = req.body();
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(data);
+			JsonObject obj = element.getAsJsonObject();
+			if(model.userExists(obj.get("username").toString(),obj.get("password").toString()))
+				res.status(200);
+			else
+				res.status(404);
+
+			return 0;
+		});
 	}
 
 	public void postHandler() {
-		post("posts/add", (req, res)-> {
+		post("/posts/add", (req, res)-> {
 
 			Gson gson = new Gson();
 			String data = req.body();
@@ -121,6 +137,24 @@ public class REST{
 			}
 
 			return 0;
+		});
+
+		get("/posts/trends_of/:userid", (req,res)-> {
+			int userId = Integer.parseInt(req.params(":userid"));
+			List<Integer> followings = model.getFollowingsByUserId(userId);
+			List<Topic> topicos = new LinkedList<>();
+
+			for (int followingId : followings) {
+				for(Topic topico: model.getTopicsByUserId(followingId)) {
+					topicos.add(topico);
+				}
+			}
+
+			Gson gson = new Gson();
+			JSONArray jsonResult = new JSONArray();
+			jsonResult.put(gson.toJson(topicos));
+
+			return jsonResult;
 		});
 	}
 	

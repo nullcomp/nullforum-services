@@ -29,7 +29,8 @@ public class MainServer {
     }
 	
     public static void initializeModel(){
-//        model.addUser(new User(1,"flromeiroc1","Fabio Lucas", "flromeiroc@gmail.com","123456"));
+        User usuariobeta = new User(1,"flromeiroc1","Fabio Lucas", "flromeiroc@gmail.com","123456");
+        // model.addUser(usuariobeta);
 	}
 	
 }
