@@ -38,6 +38,18 @@ public class Model{
 	    return true;
 	}
 
+	public User getUserByUsername(String username) {
+		Query query = users.query();
+		query.constrain(User.class);
+		ObjectSet<User> allUsers = query.execute();
+
+		for(User user:allUsers){
+			if(user.getUsername().equals(username)) return user;
+		}
+
+		return null;
+	}
+
 	public boolean userExists(String username, String password) {
 		for (User user : searchUsers()) {
 			if(username.equals(user.getUsername()) && password.equals(user.getPassword()))

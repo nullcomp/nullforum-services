@@ -21,10 +21,10 @@ public class User {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.topics = new LinkedList<Topic>();
-		this.comments = new LinkedList<Comment>();
-		this.followersIds = new LinkedList<Integer>();
-		this.followingsIds = new LinkedList<Integer>();
+		this.topics = new LinkedList<>();
+		this.comments = new LinkedList<>();
+		this.followersIds = new LinkedList<>();
+		this.followingsIds = new LinkedList<>();
 	}
 
 	public int getId() {

@@ -6,9 +6,8 @@ public class Topic extends Comment {
 	
 	private String title;
 
-	public Topic(int id, String content, String title, String image, int authorId, List<Comment> comments, int likes, int dislikes,
-			Date publishDate) {
-		super(id, content, image, authorId, comments, likes, dislikes, publishDate);
+	public Topic(int id, String content, String title, String image, int authorId, Date publishDate) {
+		super(id, content, image, authorId,publishDate);
 		this.title = title;
 	}
 

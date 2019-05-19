@@ -1,5 +1,6 @@
 package hello;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import hello.Post;
@@ -12,14 +13,13 @@ public class Comment extends Post {
 	private int likes;
 	private int dislikes;
 	
-	public Comment(int id, String content, String image, int authorId, List<Comment> comments, int likes, int dislikes,
-			Date publishDate) {
+	public Comment(int id, String content, String image, int authorId, Date publishDate) {
 		super(id, authorId, publishDate);
 		this.content = content;
 		this.image = image;
-		this.comments = comments;
-		this.likes = likes;
-		this.dislikes = dislikes;
+		this.comments = new LinkedList<>();
+		this.likes = 0;
+		this.dislikes = 0;
 	}
 	
 	public void addDislike(int dislikes) {

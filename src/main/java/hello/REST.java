@@ -75,8 +75,15 @@ public class REST{
 				byte text[] = data.getBytes("ISO-8859-1");
 				String value = new String(text, "UTF-8");
 				User user = gson.fromJson(value, User.class);
+				User newUser = new User(
+					user.getId(),
+					user.getUsername(),
+					user.getName(),
+					user.getEmail(),
+					user.getPassword()
+				);
 
-				model.addUser(user);
+				model.addUser(newUser);
 				JSONArray jsonResult = new JSONArray();
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("status", 200);
@@ -103,10 +110,14 @@ public class REST{
 			String username = json.getString("username");
 			String password = json.getString("password");
 
-			if(model.userExists(username,password))
-				return 200;
-			else
+			if(model.userExists(username,password)) {
+				Gson gson = new Gson();
+				User user = model.getUserByUsername(username);
+				return gson.toJson(user);
+			}
+			else {
 				return 401 ;
+			}
 		});
 	}
 
