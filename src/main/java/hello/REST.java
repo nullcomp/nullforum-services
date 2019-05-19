@@ -97,17 +97,16 @@ public class REST{
 			return jsonResult;
 		});
 
-		get("/user/authentication", (req,res)-> {
-			String data = req.body();
-			JsonParser parser = new JsonParser();
-			JsonElement element = parser.parse(data);
-			JsonObject obj = element.getAsJsonObject();
-			if(model.userExists(obj.get("username").toString(),obj.get("password").toString()))
-				res.status(200);
-			else
-				res.status(404);
+		post("/user/authentication", (req,res)-> {
 
-			return 0;
+			JSONObject json = new JSONObject(req.body());
+			String username = json.getString("username");
+			String password = json.getString("password");
+
+			if(model.userExists(username,password))
+				return 200;
+			else
+				return 401 ;
 		});
 	}
 
